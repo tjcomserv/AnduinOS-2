@@ -13,11 +13,12 @@ DEPS := \
   mtools \
   dosfstools
 
-.PHONY: current clean bootstrap help
+.PHONY: current clean bootstrap menuconfig help
 
 help:
 	@echo "Usage:"
 	@echo "  make          (or make current)   Build current language"
+	@echo "  make menuconfig                   Configure build options (TUI)"
 	@echo "  make clean                        Remove build artifacts"
 	@echo "  make bootstrap                    Validate environment and deps"
 
@@ -44,6 +45,9 @@ bootstrap:
 	else \
 	  echo "[MAKE] All required packages are already installed."; \
 	fi
+
+menuconfig:
+	@./menuconfig.sh
 
 current: bootstrap
 	@echo "[MAKE] Building current language..."
