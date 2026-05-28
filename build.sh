@@ -114,6 +114,12 @@ function setup_apt() {
     print_ok "Running apt update in chroot..."
     sudo chroot new_building_os apt update
     judge "Apt update in chroot"
+
+    print_ok "Installing AnduinOS base packages (keyring + apt config)..."
+    sudo chroot new_building_os apt install -y \
+        anduinos-archive-keyring \
+        anduinos-apt-config
+    judge "Install base packages"
 }
 
 function umount_folders() {
