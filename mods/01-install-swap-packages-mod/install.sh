@@ -52,4 +52,7 @@ judge "Install base-files (swap)"
 apt install -y anduinos-templates
 judge "Install anduinos-templates"
 
-print_ok "Swap packages installed."
+apt install -y anduinos-dconf-defaults
+judge "Install anduinos-dconf-defaults"
+
+print_ok "Base packages installed."
