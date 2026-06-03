@@ -59,6 +59,8 @@ apt install -y anduinos-fluent-icon-theme
 judge "Install anduinos-fluent-icon-theme"
 
 apt install -y anduinos-fluent-gtk-theme
+apt install -y anduinos-wallpapers
+judge "Install anduinos-wallpapers"
 judge "Install anduinos-fluent-gtk-theme"
 
 print_ok "Base packages installed."
