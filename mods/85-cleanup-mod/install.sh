@@ -2,6 +2,13 @@ set -e                  # exit on error
 set -o pipefail         # exit on pipeline error
 set -u                  # treat unset variable as error
 
+# Clean up root home
+print_ok "Cleaning up /root/..."
+rm /root/.config/mimeapps.list 2>/dev/null || true
+rm /root/.local/share/gnome-shell/extensions -rf 2>/dev/null || true
+rm /root/.cache -rf 2>/dev/null || true
+judge "Clean up /root/"
+
 # Clean up apt cache
 print_ok "Cleaning up apt cache..."
 apt update
