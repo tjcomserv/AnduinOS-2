@@ -1,13 +1,13 @@
+#!/bin/bash
 set -e                  # exit on error
 set -o pipefail         # exit on pipeline error
 set -u                  # treat unset variable as error
 
-print_ok "Installing AnduinOS templates and themes..."
-apt install $INTERACTIVE anduinos-templates
-judge "Install anduinos-templates"
-
-print_ok "Installing AnduinOS desktop theme..."
-apt install $INTERACTIVE anduinos-theme
-judge "Install anduinos-theme"
-
-print_ok "Base packages installed."
+# anduinos-desktop pulls in the full AnduinOS identity:
+#   anduinos-theme (icons, GTK theme, extensions, dconf, plymouth-anduinos),
+#   anduinos-templates, firmware-sof-anduinos, alsa-ucm-conf-anduinos,
+#   anduinos-apt-config (already installed in mod 01),
+#   base-files (already installed in mod 01)
+print_ok "Installing anduinos-desktop (full AnduinOS desktop metapackage)..."
+apt install $INTERACTIVE anduinos-desktop
+judge "Install anduinos-desktop"

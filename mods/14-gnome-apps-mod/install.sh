@@ -80,13 +80,6 @@ apt install $INTERACTIVE \
     --no-install-recommends
 judge "Install accessibility packages"
 
-# plymouth-anduinos Depends on plymouth and pulls it in automatically.
-# Conflicts: plymouth-theme-spinner prevents the Ubuntu version from being installed.
-print_ok "Installing plymouth-anduinos..."
-apt install $INTERACTIVE \
-    plymouth-anduinos \
-    plymouth-theme-ubuntu-text --no-install-recommends
-judge "Install plymouth-anduinos"
 
 print_ok "Installing network manager vpn packages..."
 case $TARGET_UBUNTU_VERSION in
@@ -189,11 +182,6 @@ apt install $INTERACTIVE \
     fprintd --no-install-recommends
 judge "Install ubuntu drivers support"
 
-print_ok "Installing AnduinOS firmware packages..."
-apt install $INTERACTIVE \
-    firmware-sof-anduinos \
-    alsa-ucm-conf-anduinos
-judge "Install firmware-sof-anduinos and alsa-ucm-conf-anduinos"
 
 print_ok "Installing python3..."
 apt install $INTERACTIVE \

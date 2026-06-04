@@ -14,10 +14,10 @@ source /root/mods/args.sh
 # anduinos-apt-config Depends on anduinos-archive-keyring, so one
 # apt install pulls both: keyring → trust → sources → pinning.
 print_ok "Installing anduinos-apt-config (includes anduinos-archive-keyring)..."
-apt install -y anduinos-apt-config
+apt install $INTERACTIVE anduinos-apt-config anduinos-archive-keyring
 judge "Install anduinos-apt-config + anduinos-archive-keyring"
 
 print_ok "Installing AnduinOS base-files (swap)..."
-apt install -y base-files
+apt install $INTERACTIVE base-files
 judge "Install base-files (swap)"
 
