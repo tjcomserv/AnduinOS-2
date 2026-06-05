@@ -162,50 +162,17 @@ export TARGET_PACKAGE_REMOVE="
 "
 
 #============================
-# Store experience customization
-#============================
-
-# How to install the store. Can be "none", "web", "flatpak", "snap"
-# none:     no app store
-# web:      use a web shortcut to browse the app store
-# flatpak:  use gnome software to browse the app store, and install flatpak as plugin
-# snap:     use gnome software to browse the app store, and install snap as plugin
-export STORE_PROVIDER="flatpak"
-
-# The mirror URL for flathub. Can be: "https://mirror.sjtu.edu.cn/flathub"
-export FLATHUB_MIRROR=""
-if [[ "$FLATHUB_MIRROR" != "" && "$STORE_PROVIDER" != "flatpak" ]]; then
-    echo "Error: FLATHUB_MIRROR is set, but STORE_PROVIDER is not set to flatpak"
-    exit 1
-fi
-
-# The gpg file for the flathub mirror. Can be: "https://mirror.sjtu.edu.cn/flathub/flathub.gpg"
-export FLATHUB_GPG=""
-if [[ "$FLATHUB_GPG" != "" && "$FLATHUB_MIRROR" == "" ]]; then
-    echo "Error: FLATHUB_GPG is set, but FLATHUB_MIRROR is not set"
-    exit 1
-fi
-
-#============================
 # Browser configuration
 #============================
 
-# How to install Firefox. Can be: "none", "deb", "flatpak", "snap"
+# How to install Firefox. Can be: "none", "deb", "flatpak", "snap", "official_apt"
 # none:     no firefox
 # deb:      install firefox from Canonical PPA with apt
-# flatpak:  install firefox from flathub (Only available if STORE_PROVIDER is set to "flatpak")
-# snap:     install firefox from snap (Only available if STORE_PROVIDER is set to "snap")
+# flatpak:  install firefox from flathub (requires anduinos-appstore metapackage)
+# snap:     install firefox from snap
 # official_apt: install firefox from the official Firefox apt source
 # TODO: Snap firefox seems to be broken. Investigation required.
 export FIREFOX_PROVIDER="official_apt"
-if [[ "$FIREFOX_PROVIDER" == "flatpak" && "$STORE_PROVIDER" != "flatpak" ]]; then
-    echo "Error: FIREFOX_PROVIDER is set to flatpak, but STORE_PROVIDER is not set to flatpak"
-    exit 1
-fi
-if [[ "$FIREFOX_PROVIDER" == "snap" && "$STORE_PROVIDER" != "snap" ]]; then
-    echo "Error: FIREFOX_PROVIDER is set to snap, but STORE_PROVIDER is not set to snap"
-    exit 1
-fi
 
 # Whether to install firefox with apt. If set, it will be installed from the PPA. If empty, it will be installed from the default source
 # Must set FIREFOX_PROVIDER to "deb" before using this option
@@ -303,52 +270,4 @@ export APKG_CERT_NAME="anduinos"
 export LIVE_UBUNTU_MIRROR="https://mirror.aiursoft.com/ubuntu/"
 
 
-# The default CLI tools to be installed.
-# All those tools are optional. You can remove any of them if you don't need them.
-export DEFAULT_CLI_TOOLS="
-    curl \
-    vim-tiny \
-    nano \
-    git \
-    net-tools \
-    htop \
-    httping \
-    iputils-ping \
-    iputils-tracepath \
-    dnsutils \
-    smartmontools \
-    traceroute \
-    whois \
-    fastfetch
-    "
-
-# The default Flatpak tools to be installed.
-# All those tools are optional. You can remove any of them if you don't need them.
-export DEFAULT_FLATPAK_TOOLS=""
-# export DEFAULT_FLATPAK_TOOLS="
-#     chat.revolt.RevoltDesktop \
-#     com.discordapp.Discord \
-#     com.google.EarthPro \
-#     com.jetbrains.Rider \
-#     com.obsproject.Studio \
-#     com.spotify.Client \
-#     com.tencent.WeChat \
-#     com.valvesoftware.Steam \
-#     io.github.shiftey.Desktop \
-#     net.agalwood.Motrix \
-#     org.musescore.MuseScore \
-#     org.qbittorrent.qBittorrent \
-#     org.signal.Signal \
-#     org.gnome.Boxes \
-#     org.kde.krita \
-#     io.missioncenter.MissionCenter \
-#     com.getpostman.Postman \
-#     org.shotcut.Shotcut \
-#     org.blender.Blender \
-#     org.videolan.VLC \
-#     com.wps.Office \
-#     org.chromium.Chromium \
-#     com.dosbox_x.DOSBox-X \
-#     com.mojang.Minecraft \
-#     org.codeblocks.codeblocks
-#     "
+# Default CLI tools have been moved into the anduinos-core-system metapackage.
