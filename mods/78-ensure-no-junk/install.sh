@@ -11,6 +11,7 @@ EXIT_IF_UNNECESSARY_PACKAGE_FOUND=1
 
 print_ok "Purging unnecessary packages"
 packages=(
+    alacritty
     gnome-mahjongg
     gnome-mines
     gnome-sudoku
