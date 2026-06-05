@@ -9,5 +9,9 @@ set -u                  # treat unset variable as error
 #   anduinos-apt-config (already installed in mod 01),
 #   base-files (already installed in mod 01)
 print_ok "Installing anduinos-desktop (full AnduinOS desktop metapackage)..."
-apt install $INTERACTIVE anduinos-desktop
+apt install $INTERACTIVE \
+    anduinos-desktop \
+    anduinos-desktop-apps \
+    anduinos-appstore \
+    anduinos-theme
 judge "Install anduinos-desktop"
