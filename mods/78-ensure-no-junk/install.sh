@@ -34,7 +34,6 @@ packages=(
     yaru-theme-gtk
     ubuntu-session
     apport
-    imagemagick*
     ubuntu-pro-client
     ubuntu-advantage-desktop-daemon
     ubuntu-advantage-tools
