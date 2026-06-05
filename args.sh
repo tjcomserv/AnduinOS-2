@@ -157,6 +157,8 @@ export TARGET_PACKAGE_REMOVE="
     laptop-detect \
     os-prober \
     gparted \
+    anduinos-installer-config \
+    anduinos-bwrap-hack \
 "
 
 #============================
