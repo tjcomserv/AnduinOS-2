@@ -165,38 +165,23 @@ export TARGET_PACKAGE_REMOVE="
 # Browser configuration
 #============================
 
-# How to install Firefox. Can be: "none", "deb", "flatpak", "snap", "official_apt"
-# none:     no firefox
-# deb:      install firefox from Canonical PPA with apt
-# flatpak:  install firefox from flathub (requires anduinos-appstore metapackage)
-# snap:     install firefox from snap
-# official_apt: install firefox from the official Firefox apt source
-# TODO: Snap firefox seems to be broken. Investigation required.
+# How to install Firefox. Can be: "none", "official_apt"
+# none:         no firefox
+# official_apt: install firefox from the official Mozilla APT repository
 export FIREFOX_PROVIDER="official_apt"
 
-# Whether to install firefox with apt. If set, it will be installed from the PPA. If empty, it will be installed from the default source
-# Must set FIREFOX_PROVIDER to "deb" before using this option
-# Sample: mirror-ppa.aiursoft.com
+# Build-time mirror for the Mozilla APT repository.
+# If set, replaces packages.mozilla.org during build.
+# Sample: mirror-packages.aiursoft.com
 export BUILD_FIREFOX_MIRROR=""
-if [[ "$BUILD_FIREFOX_MIRROR" != "" && "$FIREFOX_PROVIDER" != "deb" ]]; then
-    echo "Error: BUILD_FIREFOX_MIRROR is set, but FIREFOX_PROVIDER is not set to deb"
-    exit 1
-fi
 
-# The Firefox mirror for live system. If set, it will be used to replace the default PPA mirror.
-# This must be set if FIREFOX_PROVIDER is set to "deb"
-# Default: ppa.launchpadcontent.net
+# Live-system mirror for the Mozilla APT repository.
+# If set together with BUILD_FIREFOX_MIRROR, replaces the build mirror in the final image.
+# If set alone, replaces packages.mozilla.org in the final image.
 export LIVE_FIREFOX_MIRROR=""
-if [[ "$FIREFOX_PROVIDER" == "deb" && -z "$LIVE_FIREFOX_MIRROR" ]]; then
-    echo "Error: FIREFOX_PROVIDER is deb, but didn't set LIVE_FIREFOX_MIRROR"
-    exit 1
-fi
 
+# Optional locale package for Firefox (e.g. firefox-locale-zh-hans)
 export FIREFOX_LOCALE_PACKAGE=""
-if [[ "$FIREFOX_LOCALE_PACKAGE" != "" && "$FIREFOX_PROVIDER" != "deb" ]]; then
-    echo "Error: FIREFOX_LOCALE_PACKAGE is set, but FIREFOX_PROVIDER is not set to deb"
-    exit 1
-fi
 #============================
 # Input method configuration
 #============================
