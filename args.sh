@@ -78,9 +78,6 @@ done
 export LANGUAGE_PACKS="${_LP# }"
 unset _LP _c
 
-# Just logging. Continue with the rest of the script
-echo "Default system language: $DEFAULT_LANG"
-
 #==========================
 # OS system information
 #==========================
