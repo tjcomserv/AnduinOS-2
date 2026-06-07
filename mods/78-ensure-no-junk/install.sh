@@ -39,6 +39,9 @@ packages=(
     ubuntu-advantage-tools
     ubuntu-pro-client-l10n
     ubuntu-release-upgrader-core
+    ubuntu-wallpapers
+    ubuntu-desktop
+    ubuntu-desktop-minimal
     popularity-contest
     ubuntu-report
     ubuntu-wallpaper
