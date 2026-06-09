@@ -25,27 +25,16 @@ export INTERACTIVE="-y"
 # Language Information
 #==========================
 
-
-# Build environment locale — always en_US.UTF-8 regardless of DEFAULT_LANG.
-# The build scripts need a predictable, English locale to run correctly.
+# Build environment locale — strictly enforced to English.
+# LC_ALL explicitly overrides all individual LC_* variables.
 export LC_ALL=en_US.UTF-8
-export LC_CTYPE=en_US.UTF-8
-export LC_TIME=en_US.UTF-8
-export LC_NAME=en_US.UTF-8
-export LC_ADDRESS=en_US.UTF-8
-export LC_TELEPHONE=en_US.UTF-8
-export LC_MEASUREMENT=en_US.UTF-8
-export LC_IDENTIFICATION=en_US.UTF-8
-export LC_NUMERIC=en_US.UTF-8
-export LC_PAPER=en_US.UTF-8
-export LC_MONETARY=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US:en
 
 # ── Language pack codes ────────────────────────────────────────────────────
 #
-# 28 website languages (25 language-pack codes — en/pt/zh-hans/zh-hant
-# each cover two website options):
+# 28 website languages map to 25 language-pack codes.
+# (e.g., en-US/en-GB share 'en', pt-PT/pt-BR share 'pt', zh-TW/zh-HK share 'zh-hant')
 #
 #   en-US English (US)    zh-CN 中文 (CN)       de-DE Deutsch
 #   en-GB English (UK)    zh-TW 中文 (TW)       fr-FR Français
@@ -58,8 +47,7 @@ export LANGUAGE=en_US:en
 #   uk-UA Українська       id-ID Bahasa Indonesia
 #   fi-FI Suomi            hi-IN हिन्दी          el-GR Ελληνικά
 #
-# All verified present in Ubuntu apt repos (2026-06).
-# Ubiquity will dynamically fetch unlisted languages if chosen online.
+# All verified present in Ubuntu apt repos.
 export LANG_PACK_CODES="en de es fr it pt ru zh-hans ja zh-hant ko vi th ar nl sv pl tr ro da uk id fi hi el"
 _LP=""
 for _c in $LANG_PACK_CODES; do
