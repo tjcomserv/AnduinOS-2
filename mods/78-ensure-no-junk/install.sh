@@ -88,16 +88,17 @@ packages=(
     build-essential
 )
 
+violators=()
+
 for pkg in "${packages[@]}"; do
     if dpkg -l "$pkg" 2>/dev/null | grep -q '^ii'; then
-        print_warn "Error: package '$pkg' is installed." >&2
-
-        if [[ $EXIT_IF_UNNECESSARY_PACKAGE_FOUND -eq 1 ]]; then
-            print_error "Unnecessary package found: $pkg"
-            exit 1
-        fi
-
+        print_warn "Unwanted package found: $pkg"
+        violators+=("$pkg")
         apt autoremove -y --purge "$pkg"
-        judge "Purge package $pkg"
     fi
 done
+
+if [[ ${#violators[@]} -gt 0 && $EXIT_IF_UNNECESSARY_PACKAGE_FOUND -eq 1 ]]; then
+    print_error "Build failed! The following unnecessary packages were injected: ${violators[*]}"
+    exit 1
+fi

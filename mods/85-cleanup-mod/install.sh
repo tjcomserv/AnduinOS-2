@@ -11,8 +11,7 @@ judge "Clean up /root/"
 
 # Clean up apt cache
 print_ok "Cleaning up apt cache..."
-rm -rf /var/cache/apt/archives/*
-rm -rf /var/cache/apt/archives/.* 2>/dev/null || true
+find /var/cache/apt/archives -mindepth 1 -delete 2>/dev/null || true
 judge "Clean up apt cache"
 
 # Clean up apt lists (save ~50-80MB in the squashfs; the installed system
@@ -23,7 +22,7 @@ judge "Clean up apt lists"
 
 # Clean up log files
 print_ok "Cleaning up log files..."
-rm -rf /var/log/* /var/log/.* 2>/dev/null || true
+find /var/log -mindepth 1 -delete 2>/dev/null || true
 judge "Clean up log files"
 
 # Truncate machine id
@@ -34,7 +33,7 @@ judge "Truncate machine id"
 
 # Clean bash history and temp files
 print_ok "Removing bash history and temporary files..."
-rm -rf /tmp/* /tmp/.* 2>/dev/null || true
+find /tmp -mindepth 1 -delete 2>/dev/null || true
 rm -f ~/.bash_history 2>/dev/null || true
 export HISTSIZE=0
 judge "Remove bash history and temporary files"
