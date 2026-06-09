@@ -119,12 +119,12 @@ el_GR|Ελληνικά
 # Can be: jammy noble oracular plucky questing resolute
 export TARGET_UBUNTU_VERSION="resolute"
 
-# This is the apt source for the build.
+# This is the apt source for both the build process and the live system.
 # It can be any Ubuntu mirror that you prefer.
 # The default is the Aiursoft mirror.
 # You can change it to any other mirror that you prefer.
 # See https://docs.anduinos.com/Install/Select-Best-Apt-Source.html
-export BUILD_UBUNTU_MIRROR="https://mirror.aiursoft.com/ubuntu/"
+export APT_SOURCE="https://mirror.aiursoft.com/ubuntu/"
 
 # This is the name of the target OS.
 # Must be lowercase without special characters and spaces
@@ -154,79 +154,12 @@ export TARGET_PACKAGE_REMOVE="
 "
 
 #============================
-# Browser configuration
-#============================
-
-# How to install Firefox. Can be: "none", "official_apt"
-# none:         no firefox
-# official_apt: install firefox from the official Mozilla APT repository
-export FIREFOX_PROVIDER="official_apt"
-
-# Build-time mirror for the Mozilla APT repository.
-# If set, replaces packages.mozilla.org during build.
-# Sample: mirror-packages.aiursoft.com
-export BUILD_FIREFOX_MIRROR=""
-
-# Live-system mirror for the Mozilla APT repository.
-# If set together with BUILD_FIREFOX_MIRROR, replaces the build mirror in the final image.
-# If set alone, replaces packages.mozilla.org in the final image.
-export LIVE_FIREFOX_MIRROR=""
-
-# Optional locale package for Firefox (e.g. firefox-locale-zh-hans)
-export FIREFOX_LOCALE_PACKAGE=""
-#============================
-# Input method configuration
-#============================
-
-# Packages will be installed during the installation process
-# Can be:
-# * ibus-rime
-# * ibus-libpinyin
-# * ibus-chewing
-# * ibus-table-cangjie
-# * ibus-mozc
-# * ibus-hangul
-# * ibus-unikey
-# * ibus-libthai
-export INPUT_METHOD_INSTALL=""
-
-# Boolean indicator for whether to install anduinos-ibus-rime
-export CONFIG_IBUS_RIME="false"
-if [[ "$CONFIG_IBUS_RIME" == "true" && "$INPUT_METHOD_INSTALL" != *"ibus-rime"* ]]; then
-    echo "Error: CONFIG_IBUS_RIME is set to true, but INPUT_METHOD_INSTALL is not set to ibus-rime"
-    exit 1
-fi
-
-# The default keyboard layout. Can be:
-# * [('xkb', 'us')]
-# * [('xkb', 'us'), ('ibus', 'rime')]
-# * [('xkb', 'us'), ('ibus', 'chewing')]
-# * [('xkb', 'us'), ('xkb', 'fr')]
-# Keyboard layout is set by Ubiquity during install, read from /etc/default/keyboard.
-# Input method (IME) is a per-user preference configured post-install.
-# CONFIG_INPUT_METHOD has been removed — GNOME defaults to system keyboard layout.
-
-#============================
-# Software properties configuration
-#============================
-
-# To install software-properties-gtk, set to "true" or "false"
-export INSTALL_MODIFIED_SOFTWARE_PROPERTIES_GTK="true"
-
-#============================
 # Time zone configuration
 #============================
 
 # The timezone for the new OS being built (In chroot environment)
 # To view available options, run: `ls /usr/share/zoneinfo/`
 export TIMEZONE="America/Los_Angeles"
-
-#============================
-# Weather plugin configuration
-#============================
-
-# This will affect the default weather location in the weather plugin.
-export CONFIG_WEATHER_LOCATION="['{\"name\":\"San Francisco, California, United States\",\"lat\":37.7749295,\"lon\":-122.4194155}']"
 
 #============================
 # AnduinOS APKG server configuration
@@ -240,13 +173,3 @@ export APKG_SERVER="https://apkg-dev.aiursoft.com"
 # The cert is fetched from: $APKG_SERVER/artifacts/certs/$APKG_CERT_NAME
 export APKG_CERT_NAME="anduinos"
 
-#============================
-# Live system configuration
-#============================
-
-# This is the default apt server in the live system.
-# It can be any Ubuntu mirror that you prefer.
-export LIVE_UBUNTU_MIRROR="https://mirror.aiursoft.com/ubuntu/"
-
-
-# Default CLI tools have been moved into the anduinos-core-system metapackage.

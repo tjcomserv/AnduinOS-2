@@ -54,7 +54,7 @@ function setup_host() {
 
 function download_base_system() {
     print_ok "Calling debootstrap to download base debian system..."
-    sudo debootstrap  --arch=amd64 --variant=minbase --include=ca-certificates,wget,dbus $TARGET_UBUNTU_VERSION new_building_os $BUILD_UBUNTU_MIRROR
+    sudo debootstrap  --arch=amd64 --variant=minbase --include=ca-certificates,wget,dbus $TARGET_UBUNTU_VERSION new_building_os $APT_SOURCE
     judge "Download base system"
 }
 
@@ -83,10 +83,10 @@ function mount_folders() {
 function setup_apt() {
     print_ok "Setting up Ubuntu apt sources in chroot..."
     sudo tee new_building_os/etc/apt/sources.list > /dev/null <<EOF
-deb $BUILD_UBUNTU_MIRROR $TARGET_UBUNTU_VERSION main restricted universe multiverse
-deb $BUILD_UBUNTU_MIRROR $TARGET_UBUNTU_VERSION-updates main restricted universe multiverse
-deb $BUILD_UBUNTU_MIRROR $TARGET_UBUNTU_VERSION-backports main restricted universe multiverse
-deb $BUILD_UBUNTU_MIRROR $TARGET_UBUNTU_VERSION-security main restricted universe multiverse
+deb $APT_SOURCE $TARGET_UBUNTU_VERSION main restricted universe multiverse
+deb $APT_SOURCE $TARGET_UBUNTU_VERSION-updates main restricted universe multiverse
+deb $APT_SOURCE $TARGET_UBUNTU_VERSION-backports main restricted universe multiverse
+deb $APT_SOURCE $TARGET_UBUNTU_VERSION-security main restricted universe multiverse
 EOF
     judge "Set up Ubuntu apt sources"
 
