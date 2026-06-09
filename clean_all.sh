@@ -17,7 +17,6 @@ function clean_all() {
     sudo umount $SCRIPT_DIR/image/isolinux/efi || sudo umount -lf $SCRIPT_DIR/image/isolinux/efi || true
     sudo rm -rf $SCRIPT_DIR/new_building_os || true
     sudo rm -rf $SCRIPT_DIR/image || true
-    sudo rm -rf $SCRIPT_DIR/dist || true
     rm -f $SCRIPT_DIR/*.iso || true
 }
 
