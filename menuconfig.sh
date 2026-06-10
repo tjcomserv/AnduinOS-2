@@ -1,0 +1,144 @@
+#!/bin/bash
+# menuconfig.sh — TUI for editing AnduinOS build configuration (args.sh)
+set -euo pipefail
+
+DIALOG=${DIALOG:-whiptail}
+ARGS_FILE="$(dirname "$(readlink -f "$0")")/args.sh"
+
+# Back up current values
+source "$ARGS_FILE"
+
+# ---------------------------------------------------------------------------
+# Helpers: get current value, set new value
+# ---------------------------------------------------------------------------
+get() {
+    echo "${!1}"
+}
+set_val() {
+    local key="$1" val="$2"
+    # Escape forward slashes for sed
+    local escaped=$(printf '%s\n' "$val" | sed 's/[\/&]/\\&/g')
+    sed -i "s|^export ${key}=.*|export ${key}=\"${escaped}\"|" "$ARGS_FILE"
+}
+
+# ---------------------------------------------------------------------------
+# Dialog wrapper
+# ---------------------------------------------------------------------------
+inputbox() {
+    local title="$1" text="$2" init="$3"
+    local rc=0
+    result=$($DIALOG --title "$title" --inputbox "$text" 10 60 "$init" 3>&1 1>&2 2>&3) || rc=$?
+    return $rc
+}
+menubox() {
+    local title="$1" text="$2"
+    shift 2
+    local rc=0
+    result=$($DIALOG --title "$title" --menu "$text" 0 0 0 "$@" 3>&1 1>&2 2>&3) || rc=$?
+    return $rc
+}
+msg() {
+    $DIALOG --title "$1" --msgbox "$2" 0 0
+}
+
+# ---------------------------------------------------------------------------
+# Sub-menus
+# ---------------------------------------------------------------------------
+edit_os() {
+    while true; do
+        result=""
+        menubox "OS Information" "Select to edit:" \
+            "codename"  "Ubuntu codename       [$(get TARGET_UBUNTU_VERSION)]" \
+            "name"      "OS short name         [$(get TARGET_NAME)]" \
+            "business"  "OS display name       [$(get TARGET_BUSINESS_NAME)]" \
+            "version"   "Build version         [$(get TARGET_BUILD_VERSION)]" \
+            "back"      "< Back"
+        case "$result" in
+            codename)
+                inputbox "Ubuntu Codename" "Release codename (jammy/noble/oracular/plucky/questing/resolute):" "$(get TARGET_UBUNTU_VERSION)" || continue
+                set_val TARGET_UBUNTU_VERSION "$result" ;;
+            name)
+                inputbox "OS Short Name" "Lowercase, no spaces/special chars:" "$(get TARGET_NAME)" || continue
+                set_val TARGET_NAME "$result" ;;
+            business)
+                inputbox "OS Display Name" "Business name, no special chars:" "$(get TARGET_BUSINESS_NAME)" || continue
+                set_val TARGET_BUSINESS_NAME "$result" ;;
+            version)
+                inputbox "Build Version" "Version string (e.g. 2.0.0, 2.0.0-beta1):" "$(get TARGET_BUILD_VERSION)" || continue
+                set_val TARGET_BUILD_VERSION "$result" ;;
+            back|"") return ;;
+        esac
+    done
+}
+
+edit_repos() {
+    while true; do
+        result=""
+        menubox "Repositories" "Select to edit:" \
+            "apt"       "APT mirror            [$(get APT_SOURCE)]" \
+            "apkg"      "APKG server           [$(get APKG_SERVER)]" \
+            "cert"      "APKG cert name        [$(get APKG_CERT_NAME)]" \
+            "back"      "< Back"
+        case "$result" in
+            apt)
+                inputbox "APT Mirror" "Ubuntu mirror URL:" "$(get APT_SOURCE)" || continue
+                set_val APT_SOURCE "$result" ;;
+            apkg)
+                inputbox "APKG Server" "AnduinOS overlay packages server:" "$(get APKG_SERVER)" || continue
+                set_val APKG_SERVER "$result" ;;
+            cert)
+                inputbox "APKG Cert" "GPG certificate name:" "$(get APKG_CERT_NAME)" || continue
+                set_val APKG_CERT_NAME "$result" ;;
+            back|"") return ;;
+        esac
+    done
+}
+
+edit_build() {
+    while true; do
+        result=""
+        menubox "Build Options" "Select to edit:" \
+            "timezone"  "Chroot timezone       [$(get TIMEZONE)]" \
+            "interactive" "Apt interactive       [$(get INTERACTIVE)]" \
+            "back"      "< Back"
+        case "$result" in
+            timezone)
+                inputbox "Timezone" "Timezone for chroot (e.g. America/Los_Angeles):" "$(get TIMEZONE)" || continue
+                set_val TIMEZONE "$result" ;;
+            interactive)
+                local cur="$(get INTERACTIVE)"
+                local next="-y"
+                if [ "$cur" = "-y" ]; then next=""; fi
+                if $DIALOG --title "Apt Interactive" --yesno "Current: ${cur:-(none)}\n\nUse -y (non-interactive) for apt?" 0 0; then
+                    set_val INTERACTIVE "-y"
+                else
+                    set_val INTERACTIVE ""
+                fi
+                ;;
+            back|"") return ;;
+        esac
+    done
+}
+
+# ---------------------------------------------------------------------------
+# Main loop
+# ---------------------------------------------------------------------------
+while true; do
+    result=""
+    menubox "AnduinOS Build Configuration" "make menuconfig — edit args.sh" \
+        "os"        "OS Information" \
+        "repos"     "Repositories" \
+        "build"     "Build Options" \
+        "save"      "Save & Exit" \
+        "exit"      "Exit without saving"
+    case "$result" in
+        os)     edit_os ;;
+        repos)  edit_repos ;;
+        build)  edit_build ;;
+        save)
+            msg "Saved" "Configuration saved to args.sh.\nRun 'make' to build."
+            exit 0 ;;
+        exit|"")
+            exit 0 ;;
+    esac
+done
