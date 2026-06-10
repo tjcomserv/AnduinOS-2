@@ -155,7 +155,7 @@ export TIMEZONE="America/Los_Angeles"
 
 # This is the APKG server URL for AnduinOS-branded overlay packages.
 # It serves the anduinos-* packages (keyring, apt-config, branding, etc.).
-export APKG_SERVER="https://apkg.aiursoft.com"
+export APKG_SERVER="https://packages.anduinos.com"
 
 # GPG certificate name on the APKG server (used to download and verify the repo).
 # The cert is fetched from: $APKG_SERVER/artifacts/certs/$APKG_CERT_NAME
